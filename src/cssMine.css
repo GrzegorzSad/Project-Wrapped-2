@@ -1,0 +1,215 @@
+/* Custom Scrollbar */
+.custom-scrollbar {
+    margin-right: 20px; 
+    overflow-y: auto;
+    overflow-x:hidden;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 12px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    margin-top:16px;
+    margin-bottom: 16px;
+    background: #484848;
+    border-radius: 10px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Flex Grow Button Wrapper */
+.flex-grow-container {
+    display: flex;
+    gap: 5px; /* Keeps spacing consistent */
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.buttonWrapper {
+    flex-grow: 0; /* Default state */
+    transition: flex-grow 0.9s ease;
+    display: flex;
+    justify-content: center;
+}
+
+.buttonWrapper:hover {
+    flex-grow: 0.08; /* Expands the container on hover, pushing others */
+}
+
+/* Standard Button Styling */
+.buttonMine {
+    margin:5px;
+    box-shadow: 0 4px 12px rgba(18, 18, 18, 0.8);
+    border-radius: 1000px;
+    padding: 14px;
+    transition: transform 0.9s ease;
+}
+
+.buttonMine:hover {
+    transform: scale(1.1); /* Slight scale effect */
+}
+
+/* Button with Slider Effect */
+.buttonMineSlider {
+    margin: 5px;
+    transition: transform 0.9s ease, margin 0.9s ease;
+}
+
+.buttonMineSlider > button {
+    box-shadow: 0 4px 12px rgba(18, 18, 18, 0.8);
+    border-radius: 1000px;
+    padding: 12px;
+}
+
+.buttonMineSlider:hover {
+    transform: scale(1.1);
+}
+
+.buttonMineSlider .dropdown-menu {
+    background: none;
+    border: none;
+    animation: slideDown 0.6s forwards;
+}
+
+/* Button with Dropdown Effect */
+.buttonMineDropdown {
+    margin: 5px;
+    transition: flex-grow 0.9s ease; /* Consistent with other buttons */
+    display: flex;
+    justify-content: center;
+}
+
+.buttonMineDropdown > button {
+    box-shadow: 0 4px 12px rgba(18, 18, 18, 0.8);
+    transition: transform 0.9s ease, margin 0.9s ease;
+    border-radius: 1000px;
+    padding: 12px;
+}
+
+.buttonMineDropdown:hover {
+    flex-grow: 0.08; /* Expands on hover, pushing other buttons */
+}
+
+.buttonMineDropdown > button:hover {
+    transform: scale(1.1);
+}
+
+.buttonMineDropdown .dropdown-menu {
+    background: none;
+    border: none;
+    animation: slideDown 0.6s forwards;
+}
+
+.buttonMineDropdown .dropdown-item {
+    background: none;
+    border: none;
+    padding-left: 0px;
+}
+
+/* Dropdown Slide Animation */
+@keyframes slideDown {
+    from {
+        transform: translateY(45px);
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Background Wave Effect */
+.wave-effect {
+    width: 100%;
+    height: 100vh;
+    background-image: url('../public/logo192.png'); /* Replace with your image */
+    background-size: 200% 100%;
+    background-position: 0 0;
+    animation: wave 20s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+/* Centering Utility */
+.center-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75vh;
+}
+
+/* Vertical Slider Styling */
+.vertical-slider {
+    background-color: #ddd; 
+    border-radius: 50px; 
+}
+
+.bg-darkMine {
+    background-color: #3e3e3ed7;
+}
+
+.bg-darkerMine {
+    background-color: #07070760;
+}
+
+.scrolling-text {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: block;
+    max-width: 100%;
+    scrollbar-width: none;  /* Hides scrollbar in Firefox */
+    -ms-overflow-style: none;  /* Hides scrollbar in IE/Edge */
+}
+
+.scrolling-text::-webkit-scrollbar {
+    display: none;  /* Hides scrollbar in Chrome, Safari */
+}
+
+.text-shadow {
+    text-shadow: 0 4px 12px rgba(18, 18, 18, 0.8);
+}
+
+.bg-container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: blur(36px); /* ✅ Only the background gets blurred */
+    opacity: 0.5; /* Optional: Slight fade */
+    z-index: 1; /* ✅ Ensures it stays behind content */
+    transition: background-image 6s ease-in-out,
+  }
+  
+  .content {
+    position: relative;
+    z-index: 100;
+  }

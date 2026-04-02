@@ -1,0 +1,65 @@
+get top artists
+get top albums
+get top genres through songs
+get artist locations
+one person vs band
+get year
+get artist since beggining of carrer stats
+track length chart
+shit with popularity
+track number in album distribution
+
+
+
+//pages
+
+
+//top tracks
+
+time range
+
+your ranking / song popularity / song length
+
+ammount to show
+
+
+//top albums
+
+time range
+
+your ranking / album popularity / album length / year
+
+ammount to show
+
+
+//top artists
+
+time range
+
+your ranking / artist popularity / monthly listeners / year
+
+ammount to show
+
+
+//top genres
+
+show genre chart
+
+show contributing artists per genre
+
+
+//my music map
+
+artist locations with ranking for siize etc
+
+ammount to show
+
+
+//fun facts
+
+band vs person
+years (song and artist)
+track posotion chart
+
+
+
