@@ -1,37 +1,40 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const clientId = process.env.CLIENT_ID;
-
-const local='http://localhost:3000/callback'
-const prod='https://projectwrapped2.web.app/callback'
-
-const redirectUri = local// prod
-
-const scopes = [
-    'user-read-private',
-    'user-read-email',
-    'user-library-read',
-    'user-top-read'
-].join(' ');
+// Determine backend URL
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
 export const handleLogin = () => {
-    const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}&show_dialog=true`;
-    window.location.href = authUrl
+    // Redirect to backend login endpoint which handles Spotify OAuth
+    window.location.href = `${BACKEND_URL}/login`;
 }
 
 export const handleCallback = () => {
-    const params = new URLSearchParams(window.location.hash.substring(1));
+    // Get tokens from query parameters (sent by backend)
+    const params = new URLSearchParams(window.location.search);
     const token = params.get('access_token');
-    const expiresIn = parseInt(params.get('expires_in'), 10) || 3600; // Default to 1 hour if not specified
+    const refreshToken = params.get('refresh_token');
+    const expiresIn = parseInt(params.get('expires_in'), 10);
+    const error = params.get('error');
+
+    if (error) {
+        console.error("Authentication error:", error);
+        window.location.href = '/';
+        return;
+    }
+
     if (token) {
         localStorage.setItem('token', token);
+        if (refreshToken) {
+            localStorage.setItem('refreshToken', refreshToken);
+        }
         const expiryTime = Date.now() + expiresIn * 1000;
         localStorage.setItem('tokenExpiry', expiryTime);
-        window.location.hash = '';
+        window.location.search = '';
         window.location.href = '/topTracks';
     } else {
         console.error("No token found in the callback URL.");
+        window.location.href = '/';
     }
 };
 
@@ -43,8 +46,9 @@ export const checkToken = () => {
         if (Date.now() < tokenExpiry) {
             return token; // Token is valid
         } else {
-            console.warn('Token has expired.');
-            handleLogout(); // Remove token and reload
+            console.warn('Token has expired. Attempting to refresh...');
+            // Try to refresh token before logging out
+            refreshToken();
             return null;
         }
     } else {
@@ -53,10 +57,37 @@ export const checkToken = () => {
     }
 };
 
-export const handleLogout = () => {
-    localStorage.removeItem("token")
-    window.location.hash = ""
-    window.location.reload()
+export const refreshToken = async () => {
+    try {
+        const response = await axios.post(`${BACKEND_URL}/refresh`);
+        const { access_token, expires_in } = response.data;
+        
+        localStorage.setItem('token', access_token);
+        const expiryTime = Date.now() + expires_in * 1000;
+        localStorage.setItem('tokenExpiry', expiryTime);
+        
+        return access_token;
+    } catch (error) {
+        console.error('Token refresh failed:', error);
+        handleLogout(); // Log out if refresh fails
+        return null;
+    }
+};
+
+export const handleLogout = async () => {
+    try {
+        // Notify backend to clear session
+        await axios.post(`${BACKEND_URL}/logout`);
+    } catch (error) {
+        console.error('Backend logout error:', error);
+    }
+    
+    // Clear local storage
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("tokenExpiry");
+    window.location.href = "/";
+    window.location.reload();
 }
 
 export const getUserProfile = async () => {

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@maptiler/leaflet-maptilersdk": "^4.0.3",
+    "axios": "^1.14.0",
     "bootstrap": "^5.3.3",
     "cra-template": "1.2.0",
     "leaflet": "^1.9.4",
